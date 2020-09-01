@@ -53,7 +53,7 @@ def findMergeNode(head1, head2):
 
     while node1 != None:
         while node2 != None:
-            if node1.data == node2.data and (head1 != node1 or head2 != node2):
+            if node1 == node2:
                 return node1.data
 
             node2 = node2.next
