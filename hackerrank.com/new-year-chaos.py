@@ -24,16 +24,16 @@ def minimumBribes_square(q):
 
     return total
 
-def minimumBribes(arr):
+def minimumBribes(queue):
     moves = 0
 
-    for i in range(len(arr) - 1, -1, -1):
-        if arr[i] - (i + 1) > 2:
+    for i, p in enumerate(queue):
+        if p - (i + 1) > 2:
             print("Too chaotic")
             return
 
-        for j in range(0, i):
-            if arr[j] > arr[i]:
+        for j in range(max(0, p - 2), i):
+            if queue[j] > queue[i]:
                 moves += 1
 
     print(moves)
