@@ -25,10 +25,18 @@ def minimumBribes_square(q):
     return total
 
 def minimumBribes(arr):
-    idx = [  for i in arr ]
-    i = 0
+    moves = 0
 
-    return i + idx
+    for i in range(len(arr) - 1, -1, -1):
+        if arr[i] - (i + 1) > 2:
+            print("Too chaotic")
+            return
+
+        for j in range(0, i):
+            if arr[j] > arr[i]:
+                moves += 1
+
+    print(moves)
 
 
 if __name__ == '__main__':
