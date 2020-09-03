@@ -9,9 +9,8 @@ import sys
 
 # Complete the freqQuery function below.
 def freqQuery(queries):
-    ans = []
-    stack = {}
-    count = {}
+    ans = list()
+    stack = dict()
 
     for query in queries:
         command = query[0]
@@ -19,31 +18,23 @@ def freqQuery(queries):
         
         if command == 1:
             if argument in stack:
-                no = stack[argument]
-                stack[argument] = no + 1
-                count[no] -= 1
-                if no + 1 in count:
-                    count[no + 1] += 1
-                else:
-                    count[no + 1] = 1
+                stack[argument] += 1
             else:
                 stack[argument] = 1
-                count[1] = count[1] + 1 if 1 in count else 1
 
         elif command == 2:
             if argument not in stack:
                 continue
 
-            no = stack[argument]
-            stack[argument] = no - 1
-            count[no] -= 1
-            if no - 1 in count:
-                count[no - 1] += 1
-            else:
-                count[no - 1] = 1
+            stack[argument] -= 1
+            if stack[argument] == 0:
+                del stack[argument]
 
         else:
-            ans.append(1 if argument in count and count[argument] > 0 else 0)
+            if argument > 10**6:
+                ans.append(0)
+            else:
+                ans.append(1 if argument in stack.values() else 0)
 
     return ans
 
