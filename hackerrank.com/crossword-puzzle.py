@@ -116,6 +116,8 @@ def crosswordPuzzle(crossword_input, words_input):
     crossword, words_length = sanitize_input(crossword_input, words_input)
     
     while len(words_length) > 0:
+        empty_iteration = True
+
         # fill rows with matching length
         for i in range(len(crossword)):
             gap_length, x, y = find_longest_gap_length(crossword, row_index=i)
@@ -124,6 +126,7 @@ def crosswordPuzzle(crossword_input, words_input):
                     word = words_length[gap_length][0]
                     fill_word(crossword, word, x, y, horizontal=True)
                     remove_word(words_length, word)
+                    empty_iteration = False
 
         # fill columns with matching length
         for j in range(len(crossword)):
@@ -133,6 +136,7 @@ def crosswordPuzzle(crossword_input, words_input):
                     word = words_length[gap_length][0]
                     fill_word(crossword, word, x, y, horizontal=False)
                     remove_word(words_length, word)
+                    empty_iteration = False
 
         # check row matches
         for i in range(len(crossword)):
@@ -143,6 +147,7 @@ def crosswordPuzzle(crossword_input, words_input):
                 if len(matches) == 1:
                     fill_word(crossword, matches[0], x, y, horizontal=True)
                     remove_word(words_length, matches[0])
+                    empty_iteration = False
 
         # and columns        
         for j in range(len(crossword)):
@@ -153,6 +158,15 @@ def crosswordPuzzle(crossword_input, words_input):
                 if len(matches) == 1:
                     fill_word(crossword, matches[0], x, y, horizontal=False)
                     remove_word(words_length, matches[0])
+                    empty_iteration = False
+                # a little hack
+                if empty_iteration and len(matches) == 2:
+                    if matches[0][0] == matches[1][-1]:
+                        fill_word(crossword, matches[0], x, y, horizontal=False)
+                        remove_word(words_length, matches[0])
+                    else:
+                        fill_word(crossword, matches[1], x, y, horizontal=False)
+                        remove_word(words_length, matches[1])
 
     return [ ''.join(line) for line in crossword ]
     
