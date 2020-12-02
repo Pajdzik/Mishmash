@@ -10,6 +10,7 @@ import sys
 def find_shortest(grid, queue, goal_x, goal_y):
     visited = []
     grid_size = len(grid)
+    min_moves = grid_size * grid_size
 
     while queue:
         node = queue.pop(0)
@@ -18,23 +19,8 @@ def find_shortest(grid, queue, goal_x, goal_y):
             visited.append(node[:2])
 
             if node[0] == goal_x and node[1] == goal_y:
-                return node[2]
-
-            # go right
-            x = node[0]
-            while x + 1 < grid_size and grid[x + 1][node[1]] != 'X':
-                x += 1
-                
-            if x != node[0]:
-                queue.append((x, node[1], node[2] + 1))
-
-            # go down
-            y = node[1]
-            while y + 1 < grid_size and grid[node[0]][y + 1] != 'X':
-                y += 1
-
-            if y != node[1]:
-                queue.append((node[0], y, node[2] + 1))
+                if node[2] < min_moves:
+                    min_moves = node[2]
             
             # go left
             x = node[0]
@@ -51,6 +37,24 @@ def find_shortest(grid, queue, goal_x, goal_y):
 
             if y != node[1] - 1:
                 queue.append((node[0], y, node[2] + 1))
+
+            # go right
+            x = node[0]
+            while x + 1 < grid_size and grid[x + 1][node[1]] != 'X':
+                x += 1
+                
+            if x != node[0]:
+                queue.append((x, node[1], node[2] + 1))
+
+            # go down
+            y = node[1]
+            while y + 1 < grid_size and grid[node[0]][y + 1] != 'X':
+                y += 1
+
+            if y != node[1]:
+                queue.append((node[0], y, node[2] + 1))
+
+    return min_moves
 
 def minimumMoves(grid, start_x, start_y, goal_x, goal_y):
     parsed_grid = [[c for c in s] for s in grid]
