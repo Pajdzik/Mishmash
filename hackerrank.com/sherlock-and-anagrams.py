@@ -11,38 +11,23 @@ import sys
 def sherlockAndAnagrams(s):
     count = 0
 
-    for i in range(len(s)):
-        for j in range(len(s) - 1, i, -1):
-            if s[i] == s[j]:
-                count += countAnagrams(s, i, j)
+    for start in range(len(s) - 1):
+        for length in range(1, len(s) - start + 1):
+            word = sorted(s[start:start + length])
+
+            for c in range(start + 1, len(s) - length + 1):
+                palindrome = sorted(s[c:c + length])
+
+                if word == palindrome:
+                    count += 1
 
     return count
 
-def countAnagrams(s, i, j):
-    c = 0
-    si = set()
-    sj = set()
-
-    while i < j and si == sj:
-        si.add(i)
-        sj.add(j)
-        i += 1
-        j -= 1
-
-        if si != sj:
-            c += 1
-
-        print(str([s[x] for x in si]) + " | " + str([s[x] for x in sj]))
-
-    return c
-
 if __name__ == '__main__':
-    # fptr = open(os.environ['OUTPUT_PATH'], 'w')
-
-    q = int(input())
+    q = 1#int(input())
 
     for q_itr in range(q):
-        s = input()
+        s = 'kkkk'#input()
 
         result = sherlockAndAnagrams(s)
         print(str(result) + '\n')
