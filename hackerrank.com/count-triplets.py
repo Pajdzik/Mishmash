@@ -43,7 +43,7 @@ def countTriplets_polynomial2(arr, r):
                         c += 1
     return c
 
-def countTriplets(arr, r):
+def countTriplets_old(arr, r):
     c = 0
     filterred_arr = list(filter(lambda x: x == 1 or x % r == 0, arr))
 
@@ -69,15 +69,55 @@ def countTriplets(arr, r):
 
     return c
 
+def countTriplets_fail_06_10(arr, r):
+    count = 0
+    hist = {}
+    for d in sorted(arr):
+        if d == 1 or d % r == 0:
+            hist[d] = hist[d] + 1 if d in hist else 1
+
+    keys = hist.keys()
+    if r == 1:
+        for e in keys:
+            c = hist[e]
+            count += int((c * (c-1) * (c-2))/6)
+
+        return count
+
+    for em in keys:
+        cm = hist[em]
+        el = em / r
+        eh = em * r
+        if cm == 0 or el not in hist or eh not in hist:
+            continue
+       
+        count += hist[el] * cm * hist[eh]
+
+    return count
+
+def countTriplets(arr, r):
+    count = 0
+    pairs = {}
+    hist = {}
+
+    for x in arr[::-1]:
+        rx = r * x
+        rrx = r * rx
+
+        count += pairs.get((rx, rrx), 0)
+        pairs[(x, rx)] = pairs.get((x, rx), 0) + hist.get(rx, 0)
+        hist[x] = hist.get(x, 0) + 1
+
+    return count
 
 if __name__ == '__main__':
-   # fptr = open(os.environ['OUTPUT_PATH'], 'w')
-    with open(os.path.join(sys.path[0], "input", "count-triplets.10.txt"), "r") as f:
+    with open(os.path.join(sys.path[0], "input", "count-triplets.061339347780085.txt"), "r") as f:
         i = f.readlines()
         nr = i[0].rstrip().split()
         n = int(nr[0])
         r = int(nr[1])
         arr = list(map(int, ("".join(i[1:])).rstrip().split()))
         ans = countTriplets(arr, r)
-  #  fptr.write(str(ans) + '\n')
-  #  fptr.close()
+        print(ans)
+        # ans = countTriplets([1, 10, 10, 100], 10)
+        # print(ans)
