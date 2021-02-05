@@ -1,6 +1,6 @@
 # Implement an algorithm to determine if a string has all unique characters. 
 
-def isUnique(input):
+def is_unique(input):
     map = {}
 
     for c in input:
@@ -11,7 +11,7 @@ def isUnique(input):
 
     return True
 
-def isUnique2(input):
+def is_unique2(input):
     input = sorted(input)
 
     for idx in range(len(input) - 1):
@@ -22,7 +22,7 @@ def isUnique2(input):
 
 if __name__ == "__main__":
     input1 = "abcde"
-    print(input1 + ": " + str(isUnique2(input1)))
+    print(input1 + ": " + str(is_unique2(input1)))
 
     input1 = "ababa"
-    print(input1 + ": " + str(isUnique2(input1)))
+    print(input1 + ": " + str(is_unique2(input1)))
