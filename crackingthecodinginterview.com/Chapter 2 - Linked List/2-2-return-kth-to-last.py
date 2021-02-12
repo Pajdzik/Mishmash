@@ -26,16 +26,8 @@ def return_kth_to_last_calc_length(node, k):
     return None
 
 def return_kth_to_last(node, k, counter):
-    if node is None:
-        return None
-
-    counter += 1
-    result_node = return_kth_to_last(node.next, k, counter)
-
-    if counter == k:
-        return node
-
-    return result_node
+    # recursive
+    pass
 
 def run_and_print(root_node, k):
     print_linked_list(root_node)
