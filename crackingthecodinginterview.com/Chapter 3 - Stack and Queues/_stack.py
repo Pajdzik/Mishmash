@@ -1,13 +1,58 @@
 #!/usr/bin/env python
 
+class StackNode:
+    def __init__(self, value):
+        self.next = None
+        self.value = value
+
 class Stack:
+    def __init__(self):
+        self.top = None
+
     def push(self, element):
-        pass
+        node = StackNode(element)
+        node.next = self.top
+        self.top = node
 
     def pop(self):
-        pass
+        if self.top is None:
+            return None
+            
+        value = self.top.value
+        self.top = self.top.next
+
+        return value
 
     def peek(self):
-        pass
+        return self.top.value
 
+    def print(self):
+        node = self.top
+
+        while node is not None:
+            print(node.value, end=", ")
+            node = node.next
+
+        print()
+
+if __name__ == "__main__":
+    stack = Stack()
+
+    stack.push(6)
+    stack.print()
+    stack.push(2)
+    stack.print()
+    stack.push(4)
+    stack.print()
+    print("pop: {}".format(stack.pop()))
+    stack.print()
+    stack.push(9)
+    stack.print()
+    print("pop: {}".format(stack.pop()))
+    stack.print()
+    print("pop: {}".format(stack.pop()))
+    stack.print()
+    print("pop: {}".format(stack.pop()))
+    stack.print()
+    print("pop: {}".format(stack.pop()))
 
