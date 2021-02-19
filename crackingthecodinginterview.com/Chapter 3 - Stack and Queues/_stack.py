@@ -15,7 +15,7 @@ class Stack:
         self.top = node
 
     def pop(self):
-        if self.top is None:
+        if self.empty():
             return None
 
         value = self.top.value
@@ -24,6 +24,9 @@ class Stack:
         return value
 
     def peek(self):
+        if self.empty():
+            return None
+
         return self.top.value
 
     def empty(self):
@@ -58,4 +61,11 @@ if __name__ == "__main__":
     print("pop: {}".format(stack.pop()))
     stack.print()
     print("pop: {}".format(stack.pop()))
+    stack.print()
+    stack.push(19)
+    stack.print()
+    stack.push(31)
+    stack.print()
+    print("pop: {}".format(stack.pop()))
+    stack.print()
 
