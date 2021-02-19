@@ -17,7 +17,7 @@ class Stack:
     def pop(self):
         if self.top is None:
             return None
-            
+
         value = self.top.value
         self.top = self.top.next
 
@@ -26,14 +26,17 @@ class Stack:
     def peek(self):
         return self.top.value
 
-    def print(self):
+    def empty(self):
+        return self.top is None
+
+    def print(self, end="\n"):
         node = self.top
 
         while node is not None:
             print(node.value, end=", ")
             node = node.next
 
-        print()
+        print(end=end)
 
 if __name__ == "__main__":
     stack = Stack()
