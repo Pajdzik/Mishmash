@@ -23,10 +23,11 @@ def check_word(start, word, letters):
         i, j = index
 
         if letters[i][j] == word[letter_index]:
-            if letter_index == len(word):
+            if letter_index == len(word) - 1:
                 return True
 
             letter_index += 1
+            queue.clear()
 
             queue.append(i - 1, j - 1)
             queue.append(i - 1, j)
