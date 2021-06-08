@@ -20,7 +20,7 @@ def find_sequences(n):
 
     return sequences
 
-def flip_bit_to_win(n):
+def flip_bit_to_win_with_additional_memory(n):
     sequences = find_sequences(n)
     max_length = 0
 
@@ -30,6 +30,21 @@ def flip_bit_to_win(n):
             max_length = sequences[i] + sequences[i + 2]
         if sequences[i] > max_length:
             max_length = sequences[i]
+
+    return max_length
+
+def flip_bit_to_win(n):
+    last_value = None
+    current_value = 0
+    max_length = 0
+    previous_sequence = 0
+    current_sequence = 0
+
+    for bit in range(0, 33):
+        if (n & (1 << bit)) == (1 << bit):
+            current_sequence += 1
+        else:
+
 
     return max_length
 
