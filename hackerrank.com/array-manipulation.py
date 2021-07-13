@@ -16,7 +16,7 @@ import sys
 #  2. 2D_INTEGER_ARRAY queries
 #
 
-def arrayManipulation(n, queries):
+def arrayManipulation_brute_force(n, queries):
     arr = [0 for _ in range(n)]
 
     for query in queries:
@@ -31,6 +31,27 @@ def arrayManipulation(n, queries):
     for i in arr:
         if i > max:
             max = i
+
+    return max
+
+def arrayManipulation(n, queries):
+    arr = [0 for _ in range(n + 1)]
+
+    for query in queries:
+        left = query[0] - 1
+        right = query[1]
+        value = query[2]
+
+        arr[left] += value
+        arr[right] += -value
+
+    max = arr[0]
+    val = 0
+    for i in arr:
+        val += i
+
+        if val > max:
+            max = val
 
     return max
     
