@@ -1,62 +1,33 @@
 #!/bin/python3
 #https://www.hackerrank.com/challenges/fraudulent-activity-notifications
 
-def calculate_double_median(value_count, length):
-    median_i, median_j = None, None
-    
-    median_index = (length // 2) + 1
-    if length % 2 != 0:
-        median_i, median_j = median_index, median_index
-    else:
-        median_i, median_j = median_index - 1, median_index
-
-    i = 0
-    median_low, median_high = None, None
-
-    for value in range(len(value_count)):
-        if median_high != None:
-            break
-
-        for _ in range(value_count[value]):
-            i += 1
-            if i == median_i:
-                median_low = value
-            if i == median_j:
-                median_high = value 
-
-    return median_low + median_high
-
-def count_elements(arr, count_lenght):
-    value_count = [0 for _ in range(count_lenght)]
-
-    for i in arr:
-        value_count[i] += 1  
-
-    return value_count
-
-def counting_sort(arr):
-    value_count = count_elements(arr)
-
-    output = [0 for _ in range(len(arr))]
-    index = 0
-    for value in range(len(value_count)):
-        for _ in range(value_count[value]):
-            output[index] = value
-            index += 1
-
-    return output
-
+from math import ceil, floor
+import os
+import sys
 
 # Complete the activityNotifications function below.
 def activityNotifications(expenditure, d):
     c = 0
-    value_count = count_elements(expenditure[:d], max(expenditure) + 1)
+
+    value_count = [0 for _ in range(max(expenditure) + 1)]
+    for i in range(0, d):
+        value_count[expenditure[i]] += 1
+
+    median_i, median_j = (d - 1)//2 + 1, (d)//2 + 1
 
     for i in range(d, len(expenditure)):
-        double_median = calculate_double_median(value_count, d)
+        pos = 0
+        m1, m2 = None, None
+        for m in range(0, len(value_count)):
+            pos += value_count[m]
+            if m1 == None and pos >= median_i:
+                m1 = m
+            if pos >= median_j:
+                m2 = m
+                break
 
         last_element = expenditure[i]
-        if last_element >= double_median:
+        if last_element >= (m1 + m2):
             c += 1
 
         first_element = expenditure[i - d]
@@ -67,11 +38,10 @@ def activityNotifications(expenditure, d):
     return c
 
 if __name__ == '__main__':
-    #fptr = open(os.environ['OUTPUT_PATH'], 'w')
-    nd = "5 3".split()
-    n = int(nd[0])
-    d = int(nd[1])
-    expenditure = list(map(int, "10 20 30 40 50".rstrip().split()))
-    result = activityNotifications(expenditure, d)
-    #fptr.write(str(result) + '\n')
-    #fptr.close()
+    with open(os.path.join(sys.path[0], "input", "fraudulent-activity-notifications.03.txt"), "r") as f:
+        # i = f.readlines()
+        first_multiple_input = "5 4".rstrip().split()
+        n = int(first_multiple_input[0])
+        d = int(first_multiple_input[1])
+        expenditure = list(map(int, "10 20 30 40 50".rstrip().split()))
+        result = activityNotifications(expenditure, d)
