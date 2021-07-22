@@ -12,7 +12,7 @@ class Solution:
         start_index = None
         for i in range(len(s)):
             c = s[i]
-            if c == " ":
+            if not sign and c == " ":
                 continue
             elif not sign and c == "+":
                 sign = 1
