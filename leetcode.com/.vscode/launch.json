@@ -7,10 +7,10 @@
         {
             "name": "Python: Current File",
             "type": "python",
-            "python": "/usr/local/bin/python3",
+            // "python": "/usr/local/bin/python3",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
         }
     ]
 }
