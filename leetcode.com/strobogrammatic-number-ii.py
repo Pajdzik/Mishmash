@@ -1,9 +1,6 @@
 #!/bin/python3
 # https://leetcode.com/problems/strobogrammatic-number-ii/
 
-from cmath import sin
-
-
 strobogrammatic_map = {
     '0': '0',
     '1': '1',
