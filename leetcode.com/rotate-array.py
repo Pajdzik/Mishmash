@@ -2,10 +2,8 @@
 # https://leetcode.com/problems/rotate-array/
 
 def flip(nums: list[int], start: int, end: int) -> None:
-    while start < end:
-        nums[start], nums[end] = nums[end], nums[start]
-        start += 1
-        end -= 1
+    for i in range(0, (end - start) // 2 + 1):
+        nums[start + i], nums[end - i] = nums[end - i], nums[start + i]
 
 class Solution:
     def rotate(self, nums: list[int], k: int) -> None:
