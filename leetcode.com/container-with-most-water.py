@@ -1,9 +1,6 @@
 #!/bin/python3
 # https://leetcode.com/problems/container-with-most-water/
 
-from operator import le
-
-
 def get_area(heights: list[int], left: int, right: int):
     return (right - left) * min(heights[left], heights[right])
 
