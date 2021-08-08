@@ -1,3 +1,6 @@
+#!/bin/python3
+# https://leetcode.com/problems/search-insert-position/
+
 def binary_search(nums: list[int], left: int, right: int, target: int) -> int:
     middle = max(left + ((right - left) // 2), 0)
     element = nums[middle]
