@@ -4,7 +4,14 @@
 from functools import reduce
 
 class Solution:
-    def missingNumber(self, nums: list[int]) -> int:
+    def missingNumber_sum(self, nums: list[int]) -> int:
+        sum = reduce(lambda a, b: a + b, nums, 0)
+        m = len(nums)
+        expected_sum = ((m + 1)*m) // 2
+ 
+        return expected_sum - sum
+        
+    def missingNumber_map(self, nums: list[int]) -> int:
         m = len(nums) + 1
         map = [ False for _ in range(m) ]
 
