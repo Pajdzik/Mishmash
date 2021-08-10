@@ -3,7 +3,6 @@
 
 from typing import Counter
 
-
 class Solution:
     def singleNumber(self, nums: list[int]) -> int:
         res = 0
