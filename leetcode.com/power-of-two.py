@@ -1,0 +1,12 @@
+#!/bin/python3
+# https://leetcode.com/problems/power-of-two/
+
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        if n == 0:
+            return False
+        for i in range(0, 32):
+            if n & (1 << i) == n:
+                return True
+
+        return False
