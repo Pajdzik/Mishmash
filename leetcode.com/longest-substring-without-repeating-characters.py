@@ -14,15 +14,24 @@ class Solution:
 
     def lengthOfLongestSubstring(self, s: str) -> int:
         left = right = max_length = 0
+        indexes = {}
 
         while right < len(s):
-            if self.has_duplicates(s, left, right):
-                max_length = max(max_length, right - left)
-                left += 1
+            c = s[right]
+            
+            if c in indexes:
+                new_left = indexes[c] + 1
+                for i in range(left, new_left):
+                    del indexes[s[i]]
+                left = new_left
+                indexes[c] = right
             else:
-                right += 1
-                    
-        return max(max_length, right - left)
+                indexes[c] = right
+
+            max_length = max(max_length, right - left + 1)
+            right += 1
+            
+        return max_length
 
     def lengthOfLongestSubstring_bf(self, s: str) -> int:
         max_length = 0
@@ -42,4 +51,4 @@ class Solution:
         return max_length
 
 
-Solution().lengthOfLongestSubstring(" ")
+Solution().lengthOfLongestSubstring("abcabcbb")
