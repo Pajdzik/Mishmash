@@ -10,7 +10,7 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    def preorder(self, node: Optional[TreeNode], list: list[int]) -> None:
+    def preorder_recursive(self, node: Optional[TreeNode], list: list[int]) -> None:
         if node:
             list.append(node.val)
         else:
@@ -22,7 +22,24 @@ class Solution:
         if node.right:
             self.preorder(node.right, list)
 
-    def preorderTraversal(self, root: Optional[TreeNode]) -> list[int]:
+    def preorder_iterative(self, root: Optional[TreeNode]):
+        if not root:
+            return []
+
+        stack = [ root ]
         result = []
-        self.preorder(root, result)
+
+        while len(stack) > 0:
+            node = stack.pop()
+            result.append(node.val)
+
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+
+        return result
+
+    def preorderTraversal(self, root: Optional[TreeNode]) -> list[int]:
+        result = self.preorder_iterative(root)
         return result
