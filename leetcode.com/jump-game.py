@@ -1,38 +1,29 @@
 #!/bin/python3
 # https://leetcode.com/problems/jump-game/
 
-def jump(nums: list[int], index: int) -> bool:
-    if index >= len(nums):
-        return True
-        
-    delta = nums[index]
-
-    if index + delta == len(nums) - 1:
-        return True
-
-    while delta > 0:
-        if jump(nums, index + delta):
-            return True
-
-        delta -= 1
-
-    return False
-
 class Solution:
     def canJump(self, nums: list[int]) -> bool:
-        target = len(nums) - 1
+        last_position = len(nums) - 1
+        for i in range(len(nums) - 1, -1, -1):
+            if i + nums[i] >= last_position:
+                last_position = i
 
-        for i in range(target - 1, -1, -1):
-            if i + nums[i] >= target:
-                target = i
+        return last_position <= 0
 
-            if target <= 0:
-                return True
+    def canJump_topbottom(self, nums: list[int]) -> bool:
+        status = [ None for _ in range(len(nums)) ]
+        
+        status[len(nums) - 1] = True
+        for i in range(len(nums) - 2, -1, -1):
+            can_reach = False
 
-        return target <= 0
+            for j in range(i, min(i + nums[i] + 1, len(nums))):
+                if status[j]:
+                    can_reach = True
+                    break
+            
+            status[i] = can_reach
 
-    def canJump_recursion(self, nums: list[int]) -> bool:
-        return jump(nums, 0)
+        return status[0]
 
-
-Solution().canJump([1])
+Solution().canJump([2,3,1,1,4])
