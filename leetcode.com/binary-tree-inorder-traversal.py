@@ -11,8 +11,19 @@ class TreeNode:
         
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> list[int]:
-        result = []
-        self.inorderTraversal_recursive(root, result)
+        stack = [ ]
+        result = [ ]
+        curr = root
+
+        while curr or len(stack) > 0:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            
+            curr = stack.pop()
+            result.append(curr.val)
+            curr = curr.right
+
         return result
 
     def inorderTraversal_recursive(self, node: Optional[TreeNode], result: list[int]):
@@ -22,3 +33,4 @@ class Solution:
         result.append(node.val)
         self.inorderTraversal_recursive(node.right, result)
         
+Solution().inorderTraversal(TreeNode(1, TreeNode(2), TreeNode(3)))
