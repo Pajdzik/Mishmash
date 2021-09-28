@@ -6,12 +6,15 @@ class Solution:
         left = 0
         right = len(numbers) - 1
 
-        while numbers[left] + numbers[right] > target:
-            right -= 1
+        while left < right:
+            sum = numbers[left] + numbers[right]
+            if sum == target:
+                return [left + 1, right + 1]
+            elif sum > target:
+                right -= 1
+            else:
+                left += 1
 
-        while numbers[left] + numbers[right] < target:
-            left += 1
-
-        return [left + 1, right + 1]
+        return []
 
 Solution().twoSum([2,7,11,15], 9)
