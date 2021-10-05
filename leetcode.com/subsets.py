@@ -45,4 +45,5 @@ class Solution:
         
         return subsets
 
-subsets = Solution().subsets([1, 2, 3])
+if __name__ == "__main__":
+    subsets = Solution().subsets([1, 2, 3])
