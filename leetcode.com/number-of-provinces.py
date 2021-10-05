@@ -3,6 +3,31 @@
 
 class Solution:
     def findCircleNum(self, isConnected: list[list[int]]) -> int:
+        provinces_count = 0
+        visited = set()
+
+        for r in range(len(isConnected)):
+            for c in range(len(isConnected)):
+                if r in visited:
+                    continue
+                
+                provinces_count += 1
+                queue = [ r ]
+                
+                while queue:
+                    source_node = queue.pop()
+                    if source_node in visited:
+                        continue
+                    else:
+                        visited.add(source_node)
+
+                    for target_node, is_connected in enumerate(isConnected[source_node]):
+                        if is_connected == 1: 
+                            queue.append(target_node)
+
+        return provinces_count
+
+    def findCircleNum_with_map(self, isConnected: list[list[int]]) -> int:
         map = { i: set() for i in range(len(isConnected))}
 
         for r in range(len(isConnected)):
@@ -35,4 +60,4 @@ class Solution:
         return provinces_count
 
 if __name__ == "__main__":
-    Solution().findCircleNum([[1,0,0,1],[0,1,1,0],[0,1,1,1],[1,0,1,1]])
+    Solution().findCircleNum([[1]])
