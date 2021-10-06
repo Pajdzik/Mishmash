@@ -6,19 +6,24 @@ class Solution:
         if len(suffix) == 0:
             return True
 
-        if not (0 <= row < len(board) and 0 <= column < len(board[0])):
+        if not 0 <= row < len(board):
+            return False
+
+        if not 0 <= column < len(board[row]):
             return False
 
         if board[row][column] != suffix[0]:
             return False
 
-        board[row][column] = ''
+        board[row][column] = '.'
 
-        for row_delta, column_delta in [ (-1, 0), (0, -1), (1, 0), (0, 1) ]:
-            if self.backtrack(board, row + row_delta, column + column_delta, suffix[1:]):
+        for delta_r, delta_c in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
+            result = self.backtrack(board, row + delta_r, column + delta_c, suffix[1:])
+            if result:
                 return True
-
+        
         board[row][column] = suffix[0]
+
         return False
         
 
