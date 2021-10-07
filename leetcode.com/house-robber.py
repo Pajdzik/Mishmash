@@ -2,18 +2,24 @@
 # https://leetcode.com/problems/house-robber/
 
 class Solution:
-    def rob(self, nums: list[int], index: int = 0, earnings: int = 0, cache: dict[int, int] = {}) -> int:
+    def rob_dp(self, nums: list[int], index: int, earnings: int, cache: dict[int, int]) -> int:
         if index >= len(nums):
             return earnings
         
         if index in cache:
             return cache[index]
 
-        taking = self.rob(nums, index + 2, earnings + nums[index], cache)
-        avoiding = self.rob(nums, index + 1, earnings, cache)
+        taking = self.rob_dp(nums, index + 2, earnings + nums[index], cache)
+        avoiding = self.rob_dp(nums, index + 1, earnings, cache)
         cache[index] = max(taking, avoiding)
 
         return cache[index]
+
+    def rob(self, nums: list[int]) -> int:
+        cache = {}
+        self.rob_dp(nums, 0, 0, cache)
+
+        return cache[0]
 
     def rob_from_the_end(self, nums: list[int]) -> int:
         for i in range(len(nums) - 2, -1, -1):
@@ -33,5 +39,5 @@ class Solution:
         return max_value + nums[index]
 
 if __name__ == "__main__":
-    result = Solution().rob([2,7,9,3,1])
+    result = Solution().rob([1,2,1,1])
     print(result)
