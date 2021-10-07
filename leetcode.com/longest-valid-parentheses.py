@@ -57,5 +57,5 @@ class Solution:
 
         return max_length
 
-
-Solution().longestValidParentheses("()(())")
+if __name__ == "__main__":
+    Solution().longestValidParentheses("()(())")
