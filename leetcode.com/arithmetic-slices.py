@@ -6,6 +6,27 @@ class Solution:
         if len(nums) < 3:
             return 0
 
+        diff = nums[1] - nums[0]
+        curr_length = 2
+        result = 0
+
+        for i in range(2, len(nums)):
+            new_diff = nums[i] - nums[i - 1]
+            if new_diff == diff:
+                curr_length += 1
+
+                if curr_length >= 3:
+                    result += curr_length - 2
+            else:
+                diff = new_diff
+                curr_length = 2
+
+        return result
+        
+    def numberOfArithmeticSlices_iterative(self, nums: list[int]) -> int:
+        if len(nums) < 3:
+            return 0
+
         prev = nums[0]
         curr = nums[1]
         diff = curr - prev
