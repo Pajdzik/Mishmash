@@ -9,7 +9,7 @@ class ListNode:
         self.next = next
 
 class Solution:
-    def mergeTwoLists(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    def mergeTwoLists2(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         if not l1:
             return l2
         elif not l2:
@@ -30,7 +30,23 @@ class Solution:
 
         return root.next
 
-l1 = ListNode(1)
-l2 = ListNode(2)
+    def mergeTwoLists(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        node = dummy
+        
+        while l1 or l2:
+            if (l1 and l2 and l1.val <= l2.val) or (l1 and not l2):
+                node.next = l1
+                l1 = l1.next
+            elif l2:
+                node.next = l2
+                l2 = l2.next
+                
+            node = node.next
+                
+        return dummy.next
+
+l1 = ListNode(1, ListNode(2, ListNode(4)))
+l2 = ListNode(1, ListNode(3, ListNode(4)))
 
 Solution().mergeTwoLists(l1, l2)
