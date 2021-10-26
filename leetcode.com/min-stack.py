@@ -1,7 +1,7 @@
 #!/bin/python3
 # https://leetcode.com/problems/min-stack/
 
-class MinStack:
+class MinStack2:
     def __init__(self):
         """
         initialize your data structure here.
@@ -31,6 +31,25 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.mins[-1]
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, value: int) -> None:
+        new_min = min(self.getMin(), value) if self.stack else value
+        self.stack.append((value, new_min))
+    
+    def pop(self) -> None:
+        value, old_min = self.stack.pop()
+        self.min = old_min
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
+
         
 minStack = MinStack();
 minStack.push(2147483646)
