@@ -1,9 +1,6 @@
 #!/bin/python3
 # https://leetcode.com/problems/add-strings/
 
-from linecache import cache
-
-
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
         l1 = len(num1) - 1
