@@ -3,6 +3,23 @@
 
 class Solution:
     def generateParenthesis(self, n: int) -> list[str]:
+        result = []
+
+        def generate(chain: list[str], left_count: int, right_count: int) -> None:
+            if left_count > n or right_count > n or right_count > left_count:
+                return
+            if left_count == right_count == n:
+                result.append(''.join(chain))
+
+
+            generate(chain + ["("], left_count + 1, right_count)
+            generate(chain + [")"], left_count, right_count + 1)
+
+        generate([], 0, 0)
+
+        return result
+
+    def generateParenthesis_set(self, n: int) -> list[str]:
         queue = set(["()"])
 
         nn = 1
@@ -19,4 +36,5 @@ class Solution:
 
         return list(queue)
 
-Solution().generateParenthesis(2)
+if __name__ == "__main__":
+    Solution().generateParenthesis(2)
