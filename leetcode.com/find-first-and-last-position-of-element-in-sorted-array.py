@@ -1,43 +1,37 @@
 #!/bin/python3
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 
-def binary_search(nums: list[int], start: int, end: int, target: int) -> int:
-    middle_index = start + ((end - start) // 2)
-    middle_value = nums[middle_index]
-
-    if middle_value == target:
-        return middle_index
-    elif start >= end:
-        return - 1
-    elif middle_value > target:
-        return binary_search(nums, 0, middle_index - 1, target)
-    elif middle_value < target:
-        return binary_search(nums, middle_index + 1, end, target)
-
 class Solution:
     def searchRange(self, nums: list[int], target: int) -> list[int]:
-        if len(nums) == 0:
-            return [-1, -1]
+        def binary_search(delta: int) -> int:
+            left = 0
+            right = len(nums) - 1
 
-        target_index = binary_search(nums, 0, len(nums) - 1, target)
-        
-        if target_index == -1:
-            return [-1, -1]
+            while left <= right:
+                middle = left + ((right - left) // 2)
 
-        min_index = target_index
-        for i in range(target_index, -1, -1):
-            if nums[i] == target:
-                min_index = i 
-            else:
-                break
+                if nums[middle] == target:
+                    if not 0 <= middle + delta < len(nums) or nums[middle + delta] != target:
+                        return middle
+                    else:
+                        if delta > 0:
+                            left = middle + 1
+                        else:
+                            right = middle - 1
 
-        max_index = target_index
-        for i in range(target_index, len(nums)):
-            if nums[i] == target:
-                max_index = i
-            else:
-                break
+                elif nums[middle] < target:
+                    left = middle + 1
+                else:
+                    right = middle - 1
 
-        return [min_index, max_index]
+            return -1
 
-Solution().searchRange([1,1,2], 1)
+        start = binary_search(-1)
+        end = binary_search(1)
+
+        return [start, end]
+
+
+if __name__ == "__main__":
+    assert(Solution().searchRange([1], 1) == [0, 0])
+    assert(Solution().searchRange([5, 7, 7, 8, 8, 10], 8) == [3, 4])
