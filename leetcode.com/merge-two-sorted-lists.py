@@ -3,50 +3,40 @@
 
 from typing import Optional
 
+# Definition for singly-linked list.
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
 
 class Solution:
-    def mergeTwoLists2(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        if not l1:
-            return l2
-        elif not l2:
-            return l1
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        if not list1:
+            return list2
+        if not list2:
+            return list1
 
-        root = ListNode(None)
-        node = root
-
-        while l1 or l2:
-            if l1 and ((l1 and not l2) or (l1.val < l2.val)):
-                node.next = l1
-                l1 = l1.next
-            elif l2:
-                node.next = l2
-                l2 = l2.next
-
-            node = node.next
-
-        return root.next
-
-    def mergeTwoLists(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode()
-        node = dummy
-        
-        while l1 or l2:
-            if (l1 and l2 and l1.val <= l2.val) or (l1 and not l2):
-                node.next = l1
-                l1 = l1.next
-            elif l2:
-                node.next = l2
-                l2 = l2.next
-                
-            node = node.next
-                
+        current, el1, el2 = [dummy, list1, list2]
+
+        while el1 or el2:
+            if not el1 and el2:
+                current.next = el2
+                el2 = el2.next
+
+            if not el2 and el1:
+                current.next = el1
+                el1 = el1.next
+
+            if el1.val < el2.val:
+                current.next = el1
+                el1 = el1.next
+            else
+
         return dummy.next
 
-l1 = ListNode(1, ListNode(2, ListNode(4)))
-l2 = ListNode(1, ListNode(3, ListNode(4)))
+if __name__ === "___main___":
+    l1 = ListNode(1, ListNode(2, ListNode(4)))
+    l2 = ListNode(1, ListNode(3, ListNode(4)))
 
-Solution().mergeTwoLists(l1, l2)
+    Solution().mergeTwoLists(l1, l2)

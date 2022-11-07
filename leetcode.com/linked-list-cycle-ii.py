@@ -9,29 +9,27 @@ class ListNode:
 
 class Solution:
     def detectCycle(self, head: ListNode) -> ListNode:
-        if not head.next:
+        if not head or not head.next:
             return None
-            
-        node = head
 
-        slow = node.next
-        fast = slow.next
+        slow = head
+        fast = head
 
         while fast:
-            if node == slow:
-                return node
-
-            if slow == fast:
-                node = node.next
-                slow = node.next
-                fast = slow.next
-
             slow = slow.next
             fast = fast.next.next if fast.next else None
+            if fast == slow:
+                break
 
-        node = node.next
+        if not fast or not fast.next:
+            return None
 
-        return None
+        node = head
+        while node != fast:
+            node = node.next
+            fast = fast.next
+
+        return node
 
     def detectCycle_cache(self, head: ListNode) -> ListNode:
         cache = set()
