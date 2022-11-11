@@ -21,6 +21,26 @@ class Solution:
             result.insert(0, '1')
 
         return ''.join(result)
+    
+    def addBinary2(self, a: str, b: str) -> str:
+        l = 1
+        carry = 0
+        result = []
+
+        while l <= max(len(a), len(b)):
+            ai = int(a[-l]) if l <= len(a) else 0
+            bi = int(b[-l]) if l <= len(b) else 0
+
+            si = ai + bi + carry
+
+            result.append(str(si % 2))
+            carry = si // 2
+            l += 1
+
+        if carry:
+            result.append("1")
+        result.reverse()
+        return ''.join(result)
 
 res = Solution().addBinary("11", "1")
 print(res)
