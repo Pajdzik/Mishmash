@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#https://adventofcode.com/2022/day/1
 
 def find_max(input) -> int:
     max_sum = 0
