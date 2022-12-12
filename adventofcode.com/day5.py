@@ -29,14 +29,26 @@ def parse_move(command: str) -> tuple[int, str, str]:
     parts = command.split("\n")[0].split(" ")
     return (int(parts[1]), parts[3], parts[5])
 
-def move(stacks: dict[str, list[str]], command: str) -> None:
+def move_single(stacks: dict[str, list[str]], command: str) -> None:
     how_many, from_stack, to_stack = parse_move(command)
 
     for _ in range(how_many):
         el = stacks[from_stack].pop()
         stacks[to_stack].append(el)
 
-def get_stack_tops(input: io.TextIOWrapper) -> str:
+def move_multi(stacks: dict[str, list[str]], command: str) -> None:
+    how_many, from_stack, to_stack = parse_move(command)
+
+    moves = []
+    for _ in range(how_many):
+        moves.append(stacks[from_stack].pop())
+
+    for _ in range(how_many):
+        el = moves.pop()
+        stacks[to_stack].append(el)
+
+
+def get_stack_tops(input: io.TextIOWrapper, move) -> str:
     stacks = parse_stacks(input)
 
     for line in input:
@@ -47,6 +59,11 @@ def get_stack_tops(input: io.TextIOWrapper) -> str:
 
 if __name__ == "__main__":
     input = open("day5.txt", "r")
-    result = get_stack_tops(input)
-    print(result)
+    result_part1 = get_stack_tops(input, move_single)
+    print(f'Part 1: {result_part1}')
+    input.close()
+
+    input = open("day5.txt", "r")
+    result_part2 = get_stack_tops(input, move_multi)
+    print(f'Part 2: {result_part2}')
     input.close()
