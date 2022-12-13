@@ -4,6 +4,19 @@
 class Solution:
     def wordBreak(self, s: str, word_dict: list[str]) -> bool:
         words = set(word_dict)
+        possible = [False] *(len(word_dict) + 1)
+        possible[0] = True
+
+        for end in range(1, len(word_dict) + 1):
+            for start in range(end):
+                if possible[start] and s[start:end] in words:
+                    possible[end] = True
+                    break
+
+        return possible[-1]
+
+    def wordBreak_bfs(self, s: str, word_dict: list[str]) -> bool:
+        words = set(word_dict)
         queue = [ "" ]
         visited = [ False ] * (len(s) + 1)
 
@@ -23,6 +36,8 @@ class Solution:
 
             visited[len(word)] = True
 
+        return False
+
     def wordBreak_bottom_up_brute_force(self, final_word: str, word_dict: list[str], word: str = "") -> bool:
         if final_word == word:
             return True
@@ -32,6 +47,8 @@ class Solution:
                 result = self.wordBreak(final_word, word_dict, word + part)
                 if result:
                     return True
+                
+        return False
         
 
 if __name__ == "__main__":
