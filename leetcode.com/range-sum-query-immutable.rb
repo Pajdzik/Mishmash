@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 class NumArray
     def initialize(nums)
         @nums = nums
