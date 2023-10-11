@@ -9,7 +9,7 @@ class Solution:
         while i < n:
             one_prefix = [x | (1 << i) for x in reversed(codes)]
             codes = codes + one_prefix
-            i + 1
+            i += 1
 
         return codes
 
