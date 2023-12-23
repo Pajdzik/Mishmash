@@ -1,13 +1,8 @@
-let process_lines filename (f: string -> unit) = 
-  let input_channel = open_in filename in
+let read_lines file_name =
+  In_channel.with_open_bin file_name In_channel.input_all 
+  |> String.split_on_char '\n'
 
-  let rec read_line() = 
-    let line = try input_line input_channel with End_of_file -> exit 0 in
-    f line;
-    read_line ()
-  in read_line()
-
-let rec extract_numbers l : string =
+let rec extract_numbers l : int =
   let reverse_list l = 
     let rec reverse_aux acc = function 
     | [] -> acc
@@ -23,17 +18,21 @@ let rec extract_numbers l : string =
     | h::t -> first_digit t
     | [] -> "" in
 
-  let concatenated_digit_chars = (first_digit l) ^ (first_digit (reverse_list l))
+  int_of_string ((first_digit l) ^ (first_digit (reverse_list l)))
 
-let process line = 
-  let line_list = List.of_seq (String.to_seq line) in
-  extract_numbers line_list
-  
-let process_and_print line = 
-  let result = process line in
-  print_endline result
+let process_single_line line: int =
+  match line with
+  | "" -> 0
+  | s -> extract_numbers (List.of_seq (String.to_seq s))
+
+let process (input_lines : string list) = 
+  let rec process_aux = function
+  | [] -> 0
+  | h::t -> (process_single_line h) + (process_aux t) in
+  process_aux input_lines
+
 
 let () = 
-  (* print_endline (extract_numbers (List.of_seq (String.to_seq "12asd3sa"))) *)
-  let filename = "day1.txt" in
-  process_lines filename process_and_print
+  let input_lines = read_lines "day1.txt" in
+  process input_lines |> string_of_int |> print_endline
+
