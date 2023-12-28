@@ -48,7 +48,52 @@ let process_part1 input_lines =
   let sum = List.fold_left (+) 0 ids in
   sum
 
+let process_part2 input_lines =
+  let parse_color color_str =
+    (* "2 green" *)
+    let parts = String.split_on_char ' ' (String.trim color_str) in
+    match parts with
+    | [num; "red"] -> (int_of_string num, 0, 0)
+    | [num; "green"] -> (0, int_of_string num, 0)
+    | [num; "blue"] -> (0, 0, int_of_string num)
+    | _ -> failwith ("Unknown color format: " ^ color_str) in
+
+  let get_rgb_max rgb max_rgb = 
+    let r, g, b = rgb in
+    let max_r, max_g, max_b = max_rgb in
+    ((max r max_r), (max g max_g), (max b max_b)) in
+
+  let parse_turn game_str = 
+    (* "3 blue, 4 red" *)
+    let color_parts = String.split_on_char ',' game_str in
+    let parsed_colors = List.map parse_color color_parts in
+    let max_rgb = List.fold_left get_rgb_max (0, 0, 0) parsed_colors in
+    max_rgb in
+
+  let parse_game game_set_str =
+    (* "3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green" *)
+    let turns = String.split_on_char ';' game_set_str in
+    let rgbs = List.map parse_turn turns in
+    let r, g, b = List.fold_left get_rgb_max (0, 0, 0) rgbs in
+    r * g * b in
+
+  let parse_line game_line = 
+    (* "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green" *)
+    let parts = String.split_on_char ':' game_line in
+    match parts with 
+    | [_; games_part] -> parse_game (String.trim games_part)
+    | _ -> 0 in
+
+  let process_line line =
+    match line with
+    | "" -> 0
+    | line when String.starts_with line ~prefix:"Game" -> parse_line line
+    | line -> failwith ("Unexpected line: " ^ line) in
+
+  let line_results = List.map process_line input_lines in
+  List.fold_left ( + ) 0 line_results
+
 let () =
   read_lines "day2.txt"
-  |> process_part1
+  |> process_part2
   |> print_int
