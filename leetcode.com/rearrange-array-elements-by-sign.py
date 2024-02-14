@@ -1,0 +1,20 @@
+#!/bin/python3
+# https://leetcode.com/problems/rearrange-array-elements-by-sign
+
+class Solution:
+    def rearrangeArray(self, nums: list[int]) -> list[int]:
+        positives = []
+        negatives = []
+
+        for num in nums:
+            if num > 0:
+                positives.append(num)
+            else:
+                negatives.append(num)
+
+        result = []
+        for i in range(len(positives)):
+            result.append(positives[i])
+            result.append(negatives[i])
+
+        return result
