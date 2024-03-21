@@ -6,6 +6,20 @@ from collections import Counter
 
 class Solution:
     def findErrorNums(self, nums: list[int]) -> list[int]:
+        found = [False] * (len(nums) + 1)
+        dup = None
+
+        for num in nums:
+            if found[num]:
+                dup = num
+            found[num] = True
+
+        found[0] = True
+        for i, f in enumerate(found):
+            if not f:
+                return [dup, i]
+
+    def findErrorNums_counter(self, nums: list[int]) -> list[int]:
         counter = Counter()
 
         for num in nums:
