@@ -9,4 +9,4 @@ class Solution:
                 if max_digit < num[i]:
                     max_digit = num[i]
 
-        return max_digit
+        return max_digit * 3
