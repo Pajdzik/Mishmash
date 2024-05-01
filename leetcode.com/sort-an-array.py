@@ -35,9 +35,35 @@ def merge_sort(nums: list[int]) -> list[int]:
 
     return merge(sorted_left_array, sorter_right_array)
 
+def quick_partition(arr: list[int], low: int, high: int) -> list[int]:
+    pivot = arr[high]
+    i = low - 1
+
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    i += 1
+    arr[i], arr[high] = arr[high], arr[i]
+    return i
+
+def quick_sort(nums: list[int], low: int, high: int) -> list[int]:
+    if low >= high:
+        return
+    if low < 0:
+        return
+
+    pivot_index = quick_partition(nums, low, high)
+
+    quick_sort(nums, low, pivot_index - 1)
+    quick_sort(nums, pivot_index + 1, high)
+
+
 class Solution:
     def sortArray(self, nums: list[int]) -> list[int]:
-        return merge_sort(nums)
+        quick_sort(nums, 0, len(nums) - 1)
+        return nums
     
 if __name__ == "__main__":
     def test(expected: list[int], input: list[int]):
