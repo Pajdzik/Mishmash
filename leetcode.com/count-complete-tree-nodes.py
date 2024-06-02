@@ -96,14 +96,7 @@ class Solution:
             return lefts
 
         def get_last_level_count() -> int:
-            """
-            First, we get the path to the last node at the last level.
-            This specifies whether we should go left or right at each level.
-            If it's right, we increase it by half of the count of all child nodes.
-            """
-            last_level_count = 2 ** (tree_height - 1)
-
-            return 0
+            raise "IDK"
 
         count_of_nodes_without_last_level = 2 ** (tree_height - 1) - 1
         last_level_count = get_last_level_count()
