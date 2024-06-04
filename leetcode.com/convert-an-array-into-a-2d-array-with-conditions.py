@@ -6,6 +6,24 @@ from collections import Counter
 
 class Solution:
     def findMatrix(self, nums: list[int]) -> list[list[int]]:
+        result = []
+        last_row = {}
+
+        for num in nums:
+            row_index = 0
+            if num in last_row:
+                row_index = last_row[num]
+
+            last_row[num] = row_index + 1
+
+            if len(result) <= row_index:
+                result.append([])
+
+            result[row_index].append(num)
+
+        return result
+
+    def findMatrix_counter(self, nums: list[int]) -> list[list[int]]:
         counter = Counter(nums)
 
         result = []
