@@ -7,6 +7,29 @@ from collections import Counter
 
 class Solution:
     def commonChars(self, words: list[str]) -> list[str]:
+        alphabet_counter = [0 for _ in range(ord("a"), ord("z") + 1)]
+        first_word = True
+
+        for word in words:
+            word_counter = Counter(word)
+
+            for i in range(len(alphabet_counter)):
+                letter = chr(ord("a") + i)
+                if first_word:
+                    alphabet_counter[i] = word_counter[letter]
+                else:
+                    letter_count = alphabet_counter[i]
+                    alphabet_counter[i] = min(letter_count, word_counter[letter])
+
+            first_word = False
+
+        result = [
+            [chr(ord("a") + i)] * alphabet_counter[i]
+            for i in range(len(alphabet_counter))
+        ]
+        return [x for xs in result for x in xs]
+
+    def commonChars_2(self, words: list[str]) -> list[str]:
         char_counters = [Counter(word) for word in words]
 
         letters_present_in_every_word = []
