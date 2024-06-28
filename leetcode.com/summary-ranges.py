@@ -3,7 +3,21 @@
 
 
 class Solution:
+
     def summaryRanges(self, nums: list[int]) -> list[str]:
+        to_write = 0
+        start = 0
+
+        for i, el in enumerate(nums):
+            if i + 1 >= len(nums) or el + 1 < nums[i + 1]:
+                range = str(el) if start == i else f"{nums[start]}->{el}"
+                nums[to_write] = range
+                to_write += 1
+                start = i + 1
+
+        return nums[:to_write]
+
+    def summaryRanges_additional_memory(self, nums: list[int]) -> list[str]:
         ranges = []
         i = 0
 
