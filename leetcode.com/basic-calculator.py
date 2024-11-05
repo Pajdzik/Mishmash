@@ -1,10 +1,6 @@
 #!/bin/python3
 # https://leetcode.com/problems/basic-calculator
 
-
-import operator
-
-
 class Solution:
     def calculate(self, s: str) -> int:
         result = 0
