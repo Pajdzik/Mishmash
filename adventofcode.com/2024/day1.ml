@@ -44,9 +44,8 @@ let process_part2 lines =
     let first_col, second_col = foo lines in
 
     let score n = 
-      let filtered_list = List.filter (fun x -> x == n) second_col in
-      let freq = List.length filtered_list in
-      freq * n 
+        let freq = List.fold_left (fun acc x -> if x = n then acc + 1 else acc) 0 second_col in
+        freq * n
     in
 
     let scores = List.map score first_col in
