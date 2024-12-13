@@ -34,25 +34,63 @@ let process lines =
     | _ -> failwith "Invalid input"
   in
 
-  let rec process_line result numbers current_result =
-    match result with
-    | result when result == current_result && List.is_empty numbers -> result
-    | result when result < current_result -> 0
-    | result -> (
-        match numbers with
-        | [] -> 0
-        | num :: rest ->
-            let next_check = process_line result rest in
-            let match_with_addition = next_check (current_result + num) in
-            let match_with_multiplication = next_check (current_result * num) in
-            if match_with_addition > 0 || match_with_multiplication > 0 then
-              result
-            else 0)
+  let common_suffix res el =
+    let rec common_suffix_aux res el shift =
+      match el with
+      | 0 -> (true, shift)
+      | e -> (
+          let res_last_digit = res mod 10 in
+          let e_last_digit = e mod 10 in
+          match res_last_digit = e_last_digit with
+          | false -> (false, shift)
+          | true -> common_suffix_aux (res / 10) (e / 10) (shift + 1))
+    in
+    common_suffix_aux res el 0
   in
 
-  lines |> List.map parse_line
-  |> List.map (fun (result, numbers) -> process_line result numbers 0)
-  |> List.fold_left (fun acc x -> acc + x) 0
+  let pow_10 n =
+    let rec pow_10_aux n acc =
+      match n with 0 -> acc | n -> pow_10_aux (n - 1) (acc * 10)
+    in
+    pow_10_aux n 1
+  in
+
+  let rec process_line numbers result =
+    match result with
+    | 0 -> List.is_empty numbers
+    | result -> (
+        match numbers with
+        | [] -> false
+        | _ ->
+            let el = List.hd numbers in
+            let is_divisible = result mod el = 0 in
+            let with_multiplication =
+              if is_divisible then process_line (List.tl numbers) (result / el)
+              else false
+            in
+
+            let has_common_suffix, length = common_suffix result el in
+            let with_common_suffix =
+              if has_common_suffix then
+                process_line (List.tl numbers) (result / pow_10 length)
+              else false
+            in
+
+            let with_addition = process_line (List.tl numbers) (result - el) in
+
+            with_multiplication || with_common_suffix || with_addition)
+  in
+
+  let parsed_lines = lines |> List.map parse_line in
+  let can_be_achieved =
+    List.map
+      (fun (result, numbers) -> process_line (List.rev numbers) result)
+      parsed_lines
+  in
+
+  List.fold_left2
+    (fun acc line flag -> if flag then acc + fst line else acc)
+    0 parsed_lines can_be_achieved
 
 let () =
   read_lines "day7.txt" |> process |> print_int;
