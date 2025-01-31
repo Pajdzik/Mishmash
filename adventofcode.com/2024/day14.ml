@@ -32,14 +32,13 @@ let parse_line line =
       { position = (x, y); velocity = (dx, dy) })
 
 let process r c lines =
-  let calculate_final_position robot =
+  let calculate_final_position seconds robot =
     let x, y = robot.position in
     let dx, dy = robot.velocity in
-    let nx = (x + (100 * dx)) mod c in
-    let ny = (y + (100 * dy)) mod r in
+    let nx = (x + (seconds * dx)) mod c in
+    let ny = (y + (seconds * dy)) mod r in
     let nx' = if nx < 0 then nx + c else nx in
     let ny' = if ny < 0 then ny + r else ny in
-    print_endline (Printf.sprintf "Robot: %d %d -> %d %d" x y nx' ny');
     (nx', ny')
   in
 
@@ -76,18 +75,21 @@ let process r c lines =
     get_quadrant_count' (Array.make_matrix 2 2 0) (r / 2) (c / 2) positions
   in
 
-  (* let positions = lines 
-  |> List.map parse_line
-  |> List.map calculate_final_position in
+  let input = List.map parse_line lines in
 
-  let board = get_robot_count_at_a_position r c positions in
-  print_board board;
+  (* 7138 *)
+  for i = 2000 to 20000 do
+    let positions = input |> List.map (calculate_final_position i) in
+    let board = get_robot_count_at_a_position r c positions in
+    print_board board;
+    let s = read_line () in
+    print_endline s;
+    print_endline (Printf.sprintf "\n\nSecond: %d" i);
 
-  0 *)
-  lines |> List.map parse_line
-  |> List.map calculate_final_position
-  |> get_quadrant_count r c
-  |> (fun x -> x.(0).(0) * x.(0).(1) * x.(1).(0) * x.(1).(1))
+  done;
+
+  0 
+
 
 let () =
   read_lines "day14.txt" |> process 103 101 |> print_int;
