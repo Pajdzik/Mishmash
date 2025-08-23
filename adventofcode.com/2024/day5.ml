@@ -2,15 +2,6 @@ let read_lines file_name =
   In_channel.with_open_bin file_name In_channel.input_all
   |> String.split_on_char '\n'
 
-let print_string_list arr =
-  List.iter
-    (fun x ->
-      print_string x;
-      print_string ", ")
-    arr;
-
-  print_newline ()
-
 module IntSet = Set.Make(Int)
 
 let load_after_map lines = 
@@ -32,13 +23,15 @@ let load_after_map lines =
 
   load_line lines
 
-let process_input lines =
-  let must_be_after_map, update_lines_raw = load_after_map lines in
+let parse_update update_line = 
+  let parts =  String.split_on_char ',' update_line in
+  List.map (fun p -> int_of_string p) parts
 
-  let parse_update (update_line: string) = 
-    let parts =  String.split_on_char ',' update_line in
-    List.map (fun p -> int_of_string p) parts
-  in
+let mid_element updates =
+  List.nth updates (List.length updates / 2)
+
+let process_part1 lines =
+  let must_be_after_map, update_lines_raw = load_after_map lines in
 
   let rec check_updates seen updates =
     let update = List.hd updates in
@@ -59,7 +52,7 @@ let process_input lines =
   let count_results valid line = 
     match valid with
     | false -> 0
-    | true -> List.nth line (List.length line / 2)
+    | true -> mid_element line
   in
 
   let update_lines = List.map parse_update update_lines_raw in
@@ -67,10 +60,37 @@ let process_input lines =
   let results = List.map2 count_results valid_updates update_lines in
   List.fold_left (fun acc el -> acc + el) 0 results
 
-let process_part1 lines =
-  lines |>
-  process_input 
-  (* List.map process_line |>
-  List.fold_left (fun acc el -> acc + el) 0  *)
+let process_part2 lines =
+  let must_be_after_map, update_lines_raw = load_after_map lines in
 
-let () = read_lines "day5.txt" |> process_part1 |> print_int; print_newline()
+  let process_updates updates_line = 
+    let updates = parse_update updates_line in
+    let visited = IntSet.empty in
+
+    let rec topological_sort node stack =
+     let all_numbers_that_have_to_be_after = Array.get must_be_after_map node in
+     match all_numbers_that_have_to_be_after with 
+     | [] -> stack
+     |
+
+      ()
+    in
+
+    let rec visit_each_node stack updates =
+      match updates with
+      | [] -> stack
+      | node::rest -> 
+        let was_already_visisted = IntSet.find_opt node visited in
+        match was_already_visisted with
+        | Some _ -> ();
+        | None -> topological_sort node stack; 
+
+        visit_each_node stack rest 
+    in
+
+    let stack = [] in
+    let final_stack = visit_each_node stack updates in
+    0
+
+
+let () = read_lines "day5.txt" |> process_part2 |> print_int; print_newline()

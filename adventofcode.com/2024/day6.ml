@@ -49,31 +49,42 @@ let process_part1 (arr : char array array) =
     | _ -> failwith "What kind of direction is that"
   in
 
-  let rec traverse arr i j di dj seen =
+  let find_matching_coords set pos =
+    let i, j, di, dj = pos in
+    let next_dir = change_direction di dj in
+    (Tuple4Set.mem (i, j, fst next_dir, snd next_dir) set || Tuple4Set.mem pos set)
+  in
+
+  let rec traverse arr i j di dj seen traps =
     (* print_string (string_of_int path_length ^ ":\t" ^ string_of_int (i + 1) ^ ", " ^ string_of_int (j + 1)); *)
     match (i, j) with
-    | i, j when i < 0 || j < 0 -> print_tuple4_set seen; Tuple4Set.cardinal seen
-    | i, j when i >= m || j >= n -> print_tuple4_set seen; Tuple4Set.cardinal seen
+    | i, j when i < 0 || j < 0 -> traps
+    | i, j when i >= m || j >= n -> traps
     | _ ->
         let el = Array.get (Array.get arr i) j in
 
         (* print_endline (" " ^ String.make 1 el); *)
-        let ni, nj, ndi, ndj, seen =
+        let ni, nj, ndi, ndj, seen, ntraps =
           match el with
           | '#' ->
               let ndi, ndj = change_direction di dj in
-              (i - di, j - dj, ndi, ndj, seen)
+              (i - di, j - dj, ndi, ndj, seen, traps)
           | c ->
-              let new_seen = Tuple4Set.add (i, j, 0, 0) seen in
-              (i + di, j + dj, di, dj, new_seen)
+              (* print_tuple4_set seen; *)
+              let already_seen = find_matching_coords seen (i, j, di, dj) in
+              let ntraps = match already_seen with
+              | true -> traps + 1
+              | false -> traps in
+              let new_seen = Tuple4Set.add (i, j, di, dj) seen in
+              (i + di, j + dj, di, dj, new_seen, ntraps)
         in
 
-        traverse arr ni nj ndi ndj seen
+        traverse arr ni nj ndi ndj seen ntraps
   in
 
   let start_i, start_j = find_starting_point arr 0 in
   let seen = Tuple4Set.empty in
-  traverse arr start_i start_j (-1) 0 seen
+  traverse arr start_i start_j (-1) 0 seen 0
 
 let () =
   read_lines "day6.test.txt" |> lines_to_array |> process_part1 |> print_int;

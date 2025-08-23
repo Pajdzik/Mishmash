@@ -32,27 +32,67 @@ n -> n * 2024
  10 -> 1 0
 *)
 
+let count_digits n =
+  let rec count_digits' n acc =
+    match n with 0 -> acc | _ -> count_digits' (n / 10) (acc + 1)
+  in
+
+  count_digits' n 0
+
+let pow_10 n =
+  let rec pow_10' n acc =
+    match n with 0 -> acc | _ -> pow_10' (n - 1) (acc * 10)
+  in
+
+  pow_10' n 1
+
+module IntMap = Map.Make (Int)
+
 let process line =
-  let process_stone = function
-    | 0 -> [ 1 ]
-    | n when n >= 10 && n <= 99 -> [ n / 10; n mod 10 ]
-    | n when n >= 1000 && n <= 9999 -> [ n / 100; n mod 100 ]
-    | n when n >= 100_000 && n <= 999_999 -> [ n / 1000; n mod 1000 ]
-    | n when n >= 1000_0000 && n <= 9999_9999 -> [ n / 10000; n mod 10000 ]
-    | n when n >= 10000_00000 && n <= 99999_99999 -> [ n / 100000; n mod 100000 ]
-    | n when n >= 100000_000000 && n <= 999999_999999 -> [ n / 1000000; n mod 1000000 ]
-    | n -> [ n * 2024 ]
+  let process_stone mem n =
+    let process_stone' n =
+      match n with
+      | 0 -> [ 1 ]
+      | n when count_digits n mod 2 == 0 ->
+          let digits = count_digits n in
+          let l = n / pow_10 (digits / 2) in
+          let r = n mod pow_10 (digits / 2) in
+          [ l; r ]
+      | n -> [ n * 2024 ]
+    in
+
+    match IntMap.find_opt n mem with
+    | Some v -> (mem, v)
+    | None ->
+        let new_stones = process_stone' n in
+        (IntMap.add n new_stones mem, new_stones)
   in
 
-  let rec count_stones iter stones =
-    match iter with
-    | 0 -> List.length stones
-    | _ ->
-        let new_stones = List.map process_stone stones |> List.flatten in
-        count_stones (iter - 1) new_stones
+  let count_stones iter stones =
+    let mem = IntMap.empty in
+
+    let rec count_stones_starting_with_a_single_one iter stones =
+      match iter with
+      | 0 -> List.length stones
+      | _ ->
+          let map, new_stones = List.map (process_stone mem) stones in
+          count_stones_starting_with_a_single_one (iter - 1) new_stones
+    in
+
+    let rec count_stones' stones acc =
+      match stones with
+      | [] -> acc
+      | stone :: rest ->
+          let new_stones_count =
+            count_stones_starting_with_a_single_one iter [ stone ]
+          in
+          count_stones' rest (acc + new_stones_count)
+    in
+
+    count_stones' stones 0
   in
 
-  count_stones 25 line
+  count_stones 75 line
 
 let () =
   read_lines "day11.txt" |> process |> print_int;
