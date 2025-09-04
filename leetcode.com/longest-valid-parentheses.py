@@ -2,7 +2,7 @@
 # https://leetcode.com/problems/longest-valid-parentheses/
 
 class Solution:
-    def longestValidParentheses(self, s: str) -> int:
+    def longestValidParentheses_old(self, s: str) -> int:
         if len(s) < 2:
             return 0
 
@@ -57,5 +57,25 @@ class Solution:
 
         return max_length
 
+    def longestValidParentheses(self, s: str) -> int:
+        stack = [-1]
+        max_length = 0
+
+        for i, c in enumerate(s):
+            if c == "(":
+                stack.append(i)
+            elif c == ")":
+                if len(stack) > 0:
+                    _ = stack.pop()
+                    if len(stack) == 0:
+                        stack.append(i)
+                    else:
+                        max_length = max(i - stack[-1], max_length)
+
+        return max_length
+
+
 if __name__ == "__main__":
-    Solution().longestValidParentheses("()(())")
+    assert 4 == Solution().longestValidParentheses("(()()")
+    assert 2 == Solution().longestValidParentheses("(()")
+    assert 6 == Solution().longestValidParentheses("()(())")
