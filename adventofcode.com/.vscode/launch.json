@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "OCaml Debug",
+            "type": "ocaml.earlybird",
+            "request": "launch",
+            "program": "${workspaceFolder}/_build/default/bin/main.bc",
+            "stopOnEntry": false,
+            "yieldSteps": 4096,
+            "console": "integratedTerminal"
+        }
+    ]
+}
