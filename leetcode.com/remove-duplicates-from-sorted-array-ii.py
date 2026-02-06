@@ -18,13 +18,17 @@ from typing import List
 
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
+        to_insert = 2
         current = 2
-        for i in range(2, len(nums)):
-            if nums[current - 2] != nums[i]:
-                nums[current] = nums[i]
-                current += 1
 
-        return current
+        while current < len(nums):
+            if nums[to_insert - 2] != nums[current]:  # at most two elements in a row
+                nums[to_insert] = nums[current]
+                to_insert += 1
+
+            current += 1
+
+        return to_insert
 
 
 if __name__ == "__main__":
