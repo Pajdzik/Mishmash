@@ -2,7 +2,10 @@
 # https://leetcode.com/problems/sort-list
 
 
+from multiprocessing import dummy
 from typing import List, Optional
+
+from tkinter.tix import Tree
 
 
 # Definition for singly-linked list.
@@ -14,6 +17,30 @@ class ListNode:
 
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        def get_array_list(head: Optional[ListNode]):
+            result = []
+            node = head
+            while node:
+                result.append(node.val)
+                node = node.next
+
+            return result
+
+        def reconstruct_list(nums: List[int]) -> Optional[ListNode]:
+            dummy = ListNode(None)
+            node = dummy
+
+            for num in nums:
+                node.next = ListNode(num)
+                node = node.next
+
+            return dummy.next
+
+        node_list = get_array_list(head)
+        node_list.sort()
+        return reconstruct_list(node_list)
+
+    def sortList_bubble(self, head: Optional[ListNode]) -> Optional[ListNode]:
         def print_list(head: ListNode):
             node = head
             while node:
